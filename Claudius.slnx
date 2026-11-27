@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Claudius/Claudius.vcxproj" Id="e24a82f3-7b65-4bc7-b31e-a51ef5f4eead" />
+</Solution>
