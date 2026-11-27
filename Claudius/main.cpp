@@ -12,8 +12,9 @@
 
 struct ResourceImpl
 {
+	//TO DO: instead of raw pointer use unique/shared pointer to wrap them
 	ResourceImpl(SDL_Renderer* renderer) : renderer(renderer) {};
-	std::vector<std::pair<std::string, SDL_Texture*>> textures;
+	std::vector<std::pair<std::string, SDL_Texture*>> textures; //TO DO: use structure binding instead of std::pair
 	SDL_Renderer* renderer;
 	SDL_Texture* GetTexture(unsigned int id)
 	{
@@ -24,11 +25,11 @@ struct ResourceImpl
 	}
 };
 
-bool ResourceManager::LoadImageFromFile(Image& image, const std::string &filePath)
+bool ResourceManager::LoadImageFromFile(Image& image, const std::string &filePath) //TO DO: use filesystem::path instead of std::string
 {
 	auto it = impl.textures.begin();
 	unsigned int index = 0;
-	while (it != impl.textures.end())
+	while (it != impl.textures.end()) //TO DO: std::find_if
 	{
 		if ((*it).first == filePath)
 		{
@@ -36,15 +37,15 @@ bool ResourceManager::LoadImageFromFile(Image& image, const std::string &filePat
 			return true;
 		}
 		it++;
-		index++;
+		index++; //TO DO: use lambda inside
 	}
-	SDL_Surface* surface = SDL_LoadBMP(filePath.c_str());
-	if (surface != nullptr)
+	SDL_Surface* surface = SDL_LoadBMP(filePath.c_str()); //TO DO: use struct SDL_Deleter for SDL_surface ptr
+	if (surface != nullptr)// TODO: if(surface == nullptr) {return ....}
 	{
 		SDL_Texture* texture = SDL_CreateTextureFromSurface(impl.renderer, surface);
 		if (texture != nullptr)
 		{
-			impl.textures.push_back(std::pair<std::string, SDL_Texture*>(filePath, texture));
+			impl.textures.push_back(std::pair<std::string, SDL_Texture*>(filePath, texture));//TODO: structure binding
 			image.id = static_cast<unsigned int>(impl.textures.size() - 1);
 			image.width = surface->w;
 			image.height = surface->h;
@@ -52,7 +53,7 @@ bool ResourceManager::LoadImageFromFile(Image& image, const std::string &filePat
 		}
 		else
 		{
-			const char* error = SDL_GetError();
+			const char* error = SDL_GetError(); //TODO: have throw function to call it here when the error exist?
 			return false;
 		}
 	}
@@ -68,7 +69,7 @@ bool ResourceManager::LoadImageFromFile(Image& image, const std::string &filePat
 
 struct RenderImpl
 {
-	SDL_Renderer* renderer;
+	SDL_Renderer* renderer; //TODO: use RAII
 
 };
 
@@ -91,7 +92,7 @@ void RenderManager::Clear()
 KeyCode TranslateKeyCode(SDL_Keycode code)
 {
 	switch (code)
-	{
+	{//TO DO: clarify in switch?
 	case SDLK_ESCAPE: return KeyCode::ESCAPE; break;
 	case SDLK_SPACE: return KeyCode::SPACE; break;
 	case SDLK_RETURN: return KeyCode::ENTER; break;
@@ -133,7 +134,7 @@ KeyCode TranslateKeyCode(SDL_Keycode code)
 int main()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
-	SDL_Window* window = SDL_CreateWindow("Base", 0, 0, 0, 0, SDL_WindowFlags::SDL_WINDOW_RESIZABLE);
+	SDL_Window* window = SDL_CreateWindow("Base", 0, 0, 0, 0, SDL_WindowFlags::SDL_WINDOW_RESIZABLE); //TODO: Acquire in the constructor
 	if (window == nullptr)
 	{
 		const char* error = SDL_GetError();
@@ -152,22 +153,22 @@ int main()
 	ResourceManager resourceManager(resourceImpl);
 	Game game(resourceManager);
 
-	int width = 500;
-	int height = 500;
+	int width = 500; //TODO: const
+	int height = 500; //TODO: const
 	std::string title = "";
 	game.Enter(width, height, title);
 	SDL_SetWindowSize(window, width, height);
 	SDL_SetWindowTitle(window, title.c_str());
 	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 	
-	float dt = 1.0f / 60.0f;
+	float dt = 1.0f / 60.0f; //TODO: magic numbers 60 name as FPS
 	while (running)
 	{
 		SDL_Event e;
 		while (SDL_PollEvent(&e))
 		{
 			switch (e.type)
-			{
+			{//TODO: switch clarity
 			case SDL_QUIT: running = false; break;
 			case SDL_KEYDOWN: game.OnKeyDown(TranslateKeyCode(e.key.keysym.sym)); break;
 			case SDL_KEYUP: game.OnKeyUp(TranslateKeyCode(e.key.keysym.sym)); break;
@@ -177,12 +178,14 @@ int main()
 		game.Update(dt);
 		game.Render(renderManager);
 
-		SDL_SetRenderDrawColor(renderer,0,0,0,0);
+		SDL_SetRenderDrawColor(renderer,0,0,0,0); //TODO: use struct for the colors
 		SDL_RenderClear(renderer);
-		for (auto &&entry : renderManager.spriteEntries)
+		for (auto &&entry : renderManager.spriteEntries) //TODO: use for each
 		{
 			if (entry.sprite.image != nullptr)
 			{
+				//TO DO: make new function for static_cast
+				//TODO: check if the calls can be minimized: entry.sprite.source.x
 				SDL_Rect src{ entry.sprite.source.x, entry.sprite.source.y, entry.sprite.source.w, entry.sprite.source.h };
 				SDL_Rect dst{ static_cast<int>(entry.trans.position.x),
 							  static_cast<int>(entry.trans.position.y),
@@ -212,10 +215,10 @@ int main()
 		}
 		SDL_RenderPresent(renderer);
 		renderManager.Clear();
-		SDL_Delay(1000 / 20); //<- "Framerate".
+		SDL_Delay(1000 / 20); //<- "Framerate". //TO DO: name magic numbers, don't use comment 'Framerate'
 	}
 
-	SDL_DestroyRenderer(renderer);
+	SDL_DestroyRenderer(renderer); //TO DO: use destructor
 	SDL_DestroyWindow(window);
 
 	return 0;
