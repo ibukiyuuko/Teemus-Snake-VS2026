@@ -1,7 +1,7 @@
 #pragma once
 
 struct Color
-{
+{ //TODO: rule of zero/six, or just use SDL color
 	unsigned char r, g, b, a;
 
 	Color();

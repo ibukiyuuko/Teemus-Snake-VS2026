@@ -30,11 +30,11 @@ struct Player
 	void ResetPlayer();
 
 	int size = 10;
-	const float movement_speed = 10.0f;
+	const float movement_speed = 10.0f; //TODO: use static 
 	const float starting_x = 300.0f;
 	const float starting_y = 300.0f;
 
-	bool moving_right = false;
+	bool moving_right = false; //TODO: enum class or just read input directly
 	bool moving_left = false;
 	bool moving_up = false;
 	bool moving_down = false;

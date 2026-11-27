@@ -66,7 +66,7 @@ bool ResourceManager::LoadImageFromFile(Image& image, const std::string &filePat
 };
 
 // RenderManager
-
+//TODO: it would be nice to put in their own cpp files
 struct RenderImpl
 {
 	SDL_Renderer* renderer; //TODO: use RAII
@@ -92,7 +92,7 @@ void RenderManager::Clear()
 KeyCode TranslateKeyCode(SDL_Keycode code)
 {
 	switch (code)
-	{//TO DO: clarify in switch?
+	{//TO DO: clarify in switch //just use SDL key, no need to convert from sdl to your keyboard
 	case SDLK_ESCAPE: return KeyCode::ESCAPE; break;
 	case SDLK_SPACE: return KeyCode::SPACE; break;
 	case SDLK_RETURN: return KeyCode::ENTER; break;

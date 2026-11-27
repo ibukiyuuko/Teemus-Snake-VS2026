@@ -7,6 +7,7 @@ struct Image;
 
 struct Sprite
 {
+	//TO DO: where is no sprite, rid of it
 	Sprite();
 	Sprite(const Sprite& rhs);
 	Sprite(Image& image);
@@ -23,5 +24,5 @@ struct Sprite
 	Color color; //TODO: initialize values
 	const Image* image; //TODO: initialize values, change raw pointer
 
-	//TODO: destructor needed?
+	//TODO: destructor needed
 };

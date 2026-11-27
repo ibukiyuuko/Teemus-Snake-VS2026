@@ -22,7 +22,7 @@ void Player::Render(RenderManager& renderManager)
 {
 	renderManager.Render(rect, color, trans);
 
-	for (int i = 0; i < player_score; i++)//TODO: for each loop
+	for (int i = 0; i < player_score; i++)//TODO: change how to store parts and use ranged loop
 	{
 		renderManager.Render(parts[i].rect, parts[i].color, parts[i].trans);
 	}
