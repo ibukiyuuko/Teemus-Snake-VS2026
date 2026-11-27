@@ -18,6 +18,6 @@ struct Transform
 	float GetY();
 	float GetRotation();
 
-	Vector2 position;
-	float rotation;
+	Vector2 position; //TODO: initialize values
+	float rotation; //TODO: initialize values
 };

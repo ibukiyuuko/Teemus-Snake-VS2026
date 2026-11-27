@@ -11,8 +11,8 @@ struct ResourceManager;
 
 class Game
 {
-	Player playerOne;
-	Apple apple;
+	Player playerOne; //TODO: initialize values
+	Apple apple; //TODO: initialize values
 
 	ResourceManager& m_resourceManager;
 
@@ -22,8 +22,8 @@ public:
 	// float timer; <- can be used in delta time
 	// float updateInterval; <- check Game.h
 
-	int width;
-	int height;
+	int width; //TODO: initialize values, use const
+	int height; //TODO: initialize values
 
 	Game(ResourceManager& resourceManager);
 	~Game();

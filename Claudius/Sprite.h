@@ -19,7 +19,9 @@ struct Sprite
 	void SetSource(int x, int y, int w, int h);
 	void SetColor(char r, char g, char b, char a);
 
-	Rectangle source;
-	Color color;
-	const Image* image;
+	Rectangle source; //TODO: initialize values
+	Color color; //TODO: initialize values
+	const Image* image; //TODO: initialize values, change raw pointer
+
+	//TODO: destructor needed?
 };

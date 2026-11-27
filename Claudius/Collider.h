@@ -10,5 +10,5 @@ struct Collider
 
 	void SetBounds(int x, int y, int w, int h);
 
-	Rectangle rect;
+	Rectangle rect; //TODO: initialize values
 };

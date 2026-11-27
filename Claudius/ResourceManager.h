@@ -12,7 +12,7 @@ struct ResourceManager
 	~ResourceManager() {};
 	
 	bool LoadImageFromFile(Image& image, const std::string &filePath);
-	bool LoadSoundFromFile(Sound& sound, const std::string &filePath); // TODO
+	bool LoadSoundFromFile(Sound& sound, const std::string &filePath); // TODO change the type of file path
 private:
 	ResourceImpl& impl;
 };

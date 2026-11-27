@@ -2,6 +2,7 @@
 
 struct Rectangle
 {
+	//TODOL can use struct size() for better accessing rectangle values, instead of writing all of them as paremeters
 	int x{}; 
 	int y{};
 	int w{}; 

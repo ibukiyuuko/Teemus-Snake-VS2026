@@ -8,11 +8,11 @@ Collider::Collider(const Collider& rhs) : rect(rhs.rect)
 {
 }
 
-Collider::Collider(int x, int y, int w, int h) : rect(x,y,w,h)
+Collider::Collider(int x, int y, int w, int h) : rect(x,y,w,h) //TODO: too many variables, struct can be used
 {
 }
 
-void Collider::SetBounds(int x, int y, int w, int h)
+void Collider::SetBounds(int x, int y, int w, int h) //TODO: too many variables, struct can be used
 {
 	rect.SetBounds(x, y, w, h);
 }

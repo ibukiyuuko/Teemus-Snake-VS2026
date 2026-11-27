@@ -10,7 +10,7 @@ void Player::Initialize()
 	trans.SetPosition(starting_x, starting_y);
 	player_score = 0;
 
-	for (int i = 0; i < player_size; i++)
+	for (int i = 0; i < player_size; i++) //TODO: use for each, use constructor for player to be initialized
 	{
 		parts[i].color.SetColor(255, 0, 0, 0);
 		parts[i].rect.SetBounds(0, 0, size, size);
@@ -22,7 +22,7 @@ void Player::Render(RenderManager& renderManager)
 {
 	renderManager.Render(rect, color, trans);
 
-	for (int i = 0; i < player_score; i++)
+	for (int i = 0; i < player_score; i++)//TODO: for each loop
 	{
 		renderManager.Render(parts[i].rect, parts[i].color, parts[i].trans);
 	}
@@ -30,12 +30,13 @@ void Player::Render(RenderManager& renderManager)
 
 void Player::Update(double dt)
 {
+	//TODO: not use [0], use std::find
 	x_array_difference[0] = trans.GetX() - parts[0].trans.GetX();
 	y_array_difference[0] = trans.GetY() - parts[0].trans.GetY();
 
-	for (int i = 1; i < (player_size - 1); i++)
+	for (int i = 1; i < (player_size - 1); i++)//TODO use ranged loop
 	{
-			x_array_difference[i] = parts[i].trans.GetX() - parts[i + 1].trans.GetX();
+			x_array_difference[i] = parts[i].trans.GetX() - parts[i + 1].trans.GetX(); //TODO:  make function?
 			y_array_difference[i] = parts[i].trans.GetY() - parts[i + 1].trans.GetY();
 	}
 
@@ -85,7 +86,7 @@ void Player::OnKeyDown(KeyCode key)
 {
 	if (key == KeyCode::LEFT_ARROW)
 	{
-		moving_left = true;
+		moving_left = true; //TODO: use struct and change only needed boolean
 		moving_right = false;
 		moving_up = false;
 		moving_down = false;

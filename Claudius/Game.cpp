@@ -8,14 +8,14 @@ Game::Game(ResourceManager& resourceManager) : m_resourceManager(resourceManager
 {
 	//Player test, moving two players to collide with each other.
 	playerOne.Initialize();
-	apple.Initialize(10, 10);
+	apple.Initialize(10, 10); //TODO: magic numbers
 }
 
 Game::~Game()
 {
 }
 
-bool Game::Enter(int& width, int& height, std::string& title)
+bool Game::Enter(int& width, int& height, std::string& title) //TODO: use struct for size, instead of using width and height
 {
 	width = this->width;	//1250
 	height = this->height;	// 700
@@ -36,7 +36,7 @@ void Game::Update(double dt)
 	playerOne.Update(dt);
 
 	// Player colliding on theirself.
-	for (int i = 0; i < playerOne.player_score; i++)
+	for (int i = 0; i < playerOne.player_score; i++) //TODO: use std::find and lambda to reset player
 	{
 		if (playerOne.trans.GetPosition() == playerOne.parts[i].trans.GetPosition())
 		{
@@ -44,13 +44,13 @@ void Game::Update(double dt)
 		}
 	}
 
-	// Player going out of X bounds.
+	// Player going out of X bounds. //TODO: use lambda
 	if (playerOne.trans.GetX() > width || playerOne.trans.GetX() < 0)
 	{
 		playerOne.ResetPlayer();
 	}
 
-	// Player going out of Y bounds.
+	// Player going out of Y bounds. //TODO: use lambda
 	if (playerOne.trans.GetY() > height || playerOne.trans.GetY() < 0)
 	{
 		playerOne.ResetPlayer();
@@ -60,11 +60,11 @@ void Game::Update(double dt)
 	if (playerOne.trans.GetPosition() == apple.trans.GetPosition())
 	{
 		playerOne.player_score++;
-		apple.trans.SetPosition((rand() % 125) * 10.0f, (rand() % 70) * 10.0f);
+		apple.trans.SetPosition((rand() % 125) * 10.0f, (rand() % 70) * 10.0f); //TODO: remove magic numbers
 	}
 }
 
-void Game::Render(RenderManager& renderManager)
+void Game::Render(RenderManager& renderManager) //use const ref if we don't change apples or player color mid-game
 {
 	playerOne.Render(renderManager);
 	apple.Render(renderManager);
