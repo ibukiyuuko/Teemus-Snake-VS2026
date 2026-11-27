@@ -5,6 +5,9 @@
 #include "Sprite.h"
 #include "Transform.h"
 #include "Image.h"
+#include "Window.h"
+#include "SDLsystem.hpp"
+#include "SDLrenderer.hpp"
 
 #undef main
 
@@ -133,23 +136,19 @@ KeyCode TranslateKeyCode(SDL_Keycode code)
 
 int main()
 {
-	SDL_Init(SDL_INIT_EVERYTHING);
-	SDL_Window* window = SDL_CreateWindow("Base", 0, 0, 0, 0, SDL_WindowFlags::SDL_WINDOW_RESIZABLE); //TODO: Acquire in the constructor
-	if (window == nullptr)
-	{
-		const char* error = SDL_GetError();
-		return 0;
+	SDLsystem sdlWindow{};
+	Window window{"snake", 500, 500};
+	/*try {
 	}
-	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RendererFlags::SDL_RENDERER_ACCELERATED);
-	if (renderer == nullptr)
-	{
-		const char* error = SDL_GetError();
-		return 0;
-	}
+	catch (std::runtime_error(SDL_GetError())) {
+
+	}*/
+
+	auto renderer = SDLrenderer{window};
 	bool running = true;
 	
 	RenderManager renderManager;
-	ResourceImpl resourceImpl(renderer);
+	ResourceImpl resourceImpl(renderer.GetPointer());
 	ResourceManager resourceManager(resourceImpl);
 	Game game(resourceManager);
 
@@ -157,9 +156,7 @@ int main()
 	int height = 500; //TODO: const
 	std::string title = "";
 	game.Enter(width, height, title);
-	SDL_SetWindowSize(window, width, height);
-	SDL_SetWindowTitle(window, title.c_str());
-	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+
 	
 	float dt = 1.0f / 60.0f; //TODO: magic numbers 60 name as FPS
 	while (running)
@@ -178,8 +175,8 @@ int main()
 		game.Update(dt);
 		game.Render(renderManager);
 
-		SDL_SetRenderDrawColor(renderer,0,0,0,0); //TODO: use struct for the colors
-		SDL_RenderClear(renderer);
+		SDL_SetRenderDrawColor(renderer.GetPointer(),0,0,0,0); //TODO: use struct for the colors
+		SDL_RenderClear(renderer.GetPointer());
 		for (auto &&entry : renderManager.spriteEntries) //TODO: use for each
 		{
 			if (entry.sprite.image != nullptr)
@@ -191,35 +188,32 @@ int main()
 							  static_cast<int>(entry.trans.position.y),
 							  static_cast<int>(entry.sprite.image->width),
 							  static_cast<int>(entry.sprite.image->height) };
-				SDL_RenderCopy(renderer, resourceImpl.GetTexture(entry.sprite.image->id), &src, &dst);
+				SDL_RenderCopy(renderer.GetPointer(), resourceImpl.GetTexture(entry.sprite.image->id), &src, &dst);
 			}
 			else
 			{
-				SDL_SetRenderDrawColor(renderer, entry.sprite.color.r, entry.sprite.color.g, entry.sprite.color.b, entry.sprite.color.a);
+				SDL_SetRenderDrawColor(renderer.GetPointer(), entry.sprite.color.r, entry.sprite.color.g, entry.sprite.color.b, entry.sprite.color.a);
 				SDL_Rect rect{ static_cast<int>(entry.trans.position.x),
 							   static_cast<int>(entry.trans.position.y),
 							   entry.sprite.source.w,
 							   entry.sprite.source.h };
-				SDL_RenderDrawRect(renderer, &rect);
+				SDL_RenderDrawRect(renderer.GetPointer(), &rect);
 			}
 		}
 		for (auto&& entry : renderManager.rectEntries)
 		{
-			SDL_SetRenderDrawColor(renderer, entry.color.r, entry.color.g, entry.color.b, entry.color.a);
+			SDL_SetRenderDrawColor(renderer.GetPointer(), entry.color.r, entry.color.g, entry.color.b, entry.color.a);
 			SDL_Rect rect{ static_cast<int>(entry.trans.position.x),
 						   static_cast<int>(entry.trans.position.y),
 						   entry.rect.w,
 						   entry.rect.h };
 			//SDL_RenderDrawRect(renderer, &rect);	// <- If you want to draw the "outline" of the rectangle.
-			SDL_RenderFillRect(renderer, &rect);  // <- If you want to draw a "filled" rectangle. 
+			SDL_RenderFillRect(renderer.GetPointer(), &rect);  // <- If you want to draw a "filled" rectangle. 
 		}
-		SDL_RenderPresent(renderer);
+		SDL_RenderPresent(renderer.GetPointer());
 		renderManager.Clear();
 		SDL_Delay(1000 / 20); //<- "Framerate". //TO DO: name magic numbers, don't use comment 'Framerate'
 	}
-
-	SDL_DestroyRenderer(renderer); //TO DO: use destructor
-	SDL_DestroyWindow(window);
-
+	
 	return 0;
 }

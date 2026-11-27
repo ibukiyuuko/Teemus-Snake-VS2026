@@ -96,12 +96,16 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="Window.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apple.h" />
+    <ClInclude Include="SDLrenderer.hpp" />
+    <ClInclude Include="SDLsystem.hpp" />
+    <ClInclude Include="Window.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Color.h" />
