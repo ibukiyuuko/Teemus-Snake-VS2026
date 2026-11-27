@@ -1,6 +1,6 @@
 #pragma once
 #include "SDL.h"
-#include<stdexcept>
+#include <stdexcept>
 #include <string>
 class Window {
 	SDL_Window* window = nullptr; 
